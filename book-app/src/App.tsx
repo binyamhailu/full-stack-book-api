@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import InfiniteBooksList from './components/molecules/InfiniteBookList';
 import BooksList from './components/molecules/BooksList';
 
 const queryClient = new QueryClient();
