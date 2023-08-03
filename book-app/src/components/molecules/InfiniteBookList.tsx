@@ -4,8 +4,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { getBooks } from '../../api/bookApi';
 import Book from '../atoms/Book';
 
-import Scrollbars from 'react-scrollbars-custom';
-
 const PAGE_SIZE = 6;
 
 const InfiniteBooksList: React.FC = () => {
@@ -32,30 +30,24 @@ const InfiniteBooksList: React.FC = () => {
   };
 
   return (
-    <Scrollbars style={{ height: 'calc(100vh - 200px)' }}>
-      <InfiniteScroll
-        dataLength={data?.pages.flat().length || 0}
-        next={fetchNextPage}
-        hasMore={hasNextPage}
-        refreshFunction={handleRefresh}
-        pullDownToRefresh
-        pullDownToRefreshThreshold={50}
-        pullDownToRefreshContent={
-          <h3 style={{ textAlign: 'center' }}>{isRefreshing ? 'Refreshing...' : 'Pull down to refresh'}</h3>
-        }
-        releaseToRefreshContent={<h3 style={{ textAlign: 'center' }}>Release to refresh</h3>}
-      >
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-1 mt-3">
-          {data?.pages.map((page, pageIndex) => (
-            <React.Fragment key={pageIndex}>
-              {page.map((book) => (
-                <Book key={book.id} book={book} />
-              ))}
-            </React.Fragment>
-          ))}
-        </div>
-      </InfiniteScroll>
-    </Scrollbars>
+    <InfiniteScroll
+      dataLength={data?.pages.flatMap((page) => page).length || 0}
+      next={fetchNextPage}
+      hasMore={hasNextPage}
+      refreshFunction={handleRefresh}
+      pullDownToRefresh
+      pullDownToRefreshThreshold={50}
+      pullDownToRefreshContent={
+        <h3 style={{ textAlign: 'center' }}>{isRefreshing ? 'Refreshing...' : 'Pull down to refresh'}</h3>
+      }
+      releaseToRefreshContent={<h3 style={{ textAlign: 'center' }}>Release to refresh</h3>}
+    >
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-1 mt-3">
+        {data?.pages.flatMap((page) => page).map((book) => (
+          <Book key={book.id} book={book} />
+        ))}
+      </div>
+    </InfiniteScroll>
   );
 };
 
