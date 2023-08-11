@@ -6,17 +6,34 @@ import {
   Body,
   Put,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { Books } from './entities/book.entity';
+import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
   @Get()
-  async getAllBooks(): Promise<Books[]> {
-    return this.booksService.getAllBooks();
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Page number for pagination',
+  })
+  @ApiQuery({
+    name: 'pageSize',
+    required: false,
+    type: Number,
+    description: 'Number of items per page for pagination',
+  })
+  async getAllBooks(
+    @Query('page') page = 1,
+    @Query('pageSize') pageSize = 10,
+  ): Promise<{ books: Books[]; total: number }> {
+    return this.booksService.getAllBooks(page, pageSize);
   }
 
   @Get(':id')

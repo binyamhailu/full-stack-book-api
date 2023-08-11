@@ -14,7 +14,7 @@ import { BooksModule } from './books/books.module';
       password: 'changeme',
       database: 'postgres',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, // Set to false in production
+      synchronize: true, // will Set it to false in production
     }),
     BooksModule,
   ],

@@ -11,8 +11,16 @@ export class BooksService {
     private connection: Connection,
   ) {}
 
-  async getAllBooks(): Promise<Books[]> {
-    return this.booksRepository.find();
+  async getAllBooks(
+    page: number,
+    pageSize: number,
+  ): Promise<{ books: Books[]; total: number }> {
+    const [books, total] = await this.booksRepository.findAndCount({
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    });
+
+    return { books, total };
   }
 
   async getBookById(id: number): Promise<Books> {
